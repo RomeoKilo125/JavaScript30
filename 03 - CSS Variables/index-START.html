@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Scoped CSS Variables and JS</title>
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
+
 <body>
   <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
 
@@ -19,10 +21,9 @@
     <input id="base" type="color" name="base" value="#ffc600">
   </div>
 
-  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+  <img src="https://picsum.photos/800/500">
 
   <style>
-
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -43,10 +44,47 @@
     input {
       width: 100px;
     }
+
+    .hl {
+      color: var(--base)
+    }
+
+    img {
+      background-color: var(--base);
+      filter: blur(var(--blur));
+      padding: var(--spacing);
+    }
   </style>
 
   <script>
+
+    document.querySelectorAll('.controls input').forEach(
+      elt => {
+        document.documentElement.style.setProperty(
+          `--${elt.name}`,
+          `${elt.value}${elt.dataset.sizing || ''}`,
+        );
+        elt.addEventListener('change mousemove',
+          (e) => {
+            const t = e.target;
+            document.documentElement.style.setProperty(
+              `--${t.name}`,
+              `${t.value}${t.dataset.sizing || ''}`
+            )
+          }
+        )
+        elt.addEventListener('mousemove',
+          (e) => {
+            const t = e.target;
+            document.documentElement.style.setProperty(
+              `--${t.name}`,
+              `${t.value}${t.dataset.sizing || ''}`
+            )
+          }
+        )
+      })
   </script>
 
 </body>
+
 </html>
