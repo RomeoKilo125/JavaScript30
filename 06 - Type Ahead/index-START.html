@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Type Ahead 👀</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
+
 <body>
 
   <form class="search-form">
@@ -15,9 +17,40 @@
       <li>or a state</li>
     </ul>
   </form>
-<script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  <script>
+    const cities = [];
+    const search = document.querySelector('.search');
+    const suggestions = document.querySelector('.suggestions');
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    fetch(endpoint)
+      .then(data => data.json())
+      .then(json => cities.push(...json))
 
-</script>
+    function getShortList(search) {
+      return cities.filter((place) =>
+        search.test(place.city)
+        || search.test(place.state)
+      )
+    }
+
+    function createMarkup(shortList, search, str) {
+      return shortList.map((place) => {
+        const city = place.city.replace(search, `<span class="hl">${str}</span>`)
+        const state = place.state.replace(search, `<span class="hl">${str}</span>`)
+        return `<li><span>${city}, ${state}</span><span class="population">${place.population}</span>`
+
+      }).join('');
+    }
+    function handleInput(event) {
+      const str = event.target.value;
+      const search = new RegExp(str, 'gi');
+      const shortList = getShortList(search);
+      const markup = createMarkup(shortList, search, str);
+      suggestions.innerHTML = markup;
+
+    }
+    search.addEventListener('keyup', handleInput)
+  </script>
 </body>
+
 </html>
