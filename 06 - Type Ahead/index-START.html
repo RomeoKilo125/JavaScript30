@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Type Ahead 👀</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
+
 <body>
 
   <form class="search-form">
@@ -15,9 +17,48 @@
       <li>or a state</li>
     </ul>
   </form>
-<script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  <script>
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
-</script>
+    const cities = []
+    fetch(endpoint)
+      .then(response => response.json())
+      .then(data => cities.push(...data))
+
+
+
+    const showMatches = (val, cities) => {
+
+      const suggestions = document.querySelector('.suggestions')
+      if (val === '') {
+        const suggestionList =
+          `<li>Filter for a city</li>
+          <li>or a state</li>`
+        suggestions.innerHTML = suggestionList
+        return;
+      }
+
+      const arg = new RegExp(val, "gi")
+      const shortlist = cities.filter((place) => arg.test(place.city) || arg.test(place.state))
+
+      const suggestionList = shortlist.map((place) => {
+        const cityName = place.city.replace(arg, `<span class="hl">${val}</span>`)
+        const stateName = place.state.replace(arg, `<span class="hl">${val}</span>`)
+        const population = new Intl.NumberFormat('us-EN', { useGrouping: true }).format(place.population)
+        return `<li>
+          <span class="name">${cityName}, ${stateName}</span>
+          <span class"population">${population} </span>
+         </li>`
+      }).join('')
+      suggestions.innerHTML = suggestionList
+    }
+
+    document.querySelector('.search').addEventListener('input', (e) => {
+      showMatches(e.target.value, cities)
+    })
+
+
+  </script>
 </body>
+
 </html>
