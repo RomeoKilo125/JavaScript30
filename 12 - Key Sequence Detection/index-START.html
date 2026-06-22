@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -6,7 +6,21 @@
     <script type="text/javascript" src="./cornify.js"></script>
     <link rel="icon" href="https://fav.farm/🔥" />
   </head>
+
   <body>
-    <script></script>
+    <script>
+      const keysPressed = [];
+      const secretCode = "rossking";
+      window.addEventListener("keyup", (e) => {
+        keysPressed.push(e.key);
+        keysPressed.splice(
+          -secretCode.length - 1,
+          keysPressed.length - secretCode.length,
+        );
+        if (keysPressed.join("") === secretCode) {
+          cornify_add();
+        }
+      });
+    </script>
   </body>
 </html>
