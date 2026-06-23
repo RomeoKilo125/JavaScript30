@@ -241,22 +241,22 @@
 
       const sliderImages = document.querySelectorAll(".slide-in");
 
-      function checkSlide(e) {
-        sliderImages.forEach((image) => {
-          const slideInAt =
-            window.scrollY + window.innerHeight - image.height / 2;
-          const imgBottom = image.offsetTop + image.height;
-          const isHalfShown = slideInAt > image.offsetTop;
-          const isScrolledPast = window.scrollY > imgBottom;
-          if (isHalfShown && !isScrolledPast) {
-            image.classList.add("active");
-          } else {
-            image.classList.remove("active");
-          }
-        });
-      }
-
-      window.addEventListener("scroll", debounce(checkSlide));
+      const imageWatcher = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+            } else {
+              entry.target.classList.remove("active");
+            }
+          });
+        },
+        { threshold: 0.5 },
+      );
+      setTimeout(
+        () => sliderImages.forEach((image) => imageWatcher.observe(image)),
+        100,
+      );
     </script>
 
     <style>
