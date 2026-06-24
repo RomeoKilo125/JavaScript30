@@ -48,7 +48,11 @@
         dignissimos.
       </p>
 
-      <img src="https://unsplash.it/400/400" class="align-left slide-in" />
+      <img
+        id="img1"
+        src="https://unsplash.it/400/400"
+        class="align-left slide-in"
+      />
 
       <p>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates,
@@ -65,7 +69,11 @@
         dolorum expedita quam, nesciunt
       </p>
 
-      <img src="https://unsplash.it/400/401" class="align-right slide-in" />
+      <img
+        id="img2"
+        src="https://unsplash.it/400/401"
+        class="align-right slide-in"
+      />
 
       <p>
         at provident praesentium atque quas rerum optio dignissimos repudiandae
@@ -102,7 +110,11 @@
         quaerat voluptatem rerum natus magni. Eum amet autem dolor ullam.
       </p>
 
-      <img src="https://unsplash.it/200/500" class="align-left slide-in" />
+      <img
+        id="img3"
+        src="https://unsplash.it/200/500"
+        class="align-left slide-in"
+      />
 
       <p>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio
@@ -110,7 +122,11 @@
         Quibusdam saepe aperiam explicabo placeat optio, consequuntur nihil
         voluptatibus expedita quia vero perferendis, deserunt et incidunt
         eveniet
-        <img src="https://unsplash.it/200/200" class="align-right slide-in" />
+        <img
+          id="img4"
+          src="https://unsplash.it/200/200"
+          class="align-right slide-in"
+        />
         temporibus doloremque possimus facilis. Possimus labore, officia dolore!
         Eaque ratione saepe, alias harum laboriosam deserunt laudantium
         blanditiis eum explicabo placeat reiciendis labore iste sint.
@@ -146,7 +162,11 @@
         facere ducimus accusantium eos veritatis neque.
       </p>
 
-      <img src="https://unsplash.it/400/400" class="align-right slide-in" />
+      <img
+        id="img5"
+        src="https://unsplash.it/400/400"
+        class="align-right slide-in"
+      />
 
       <p>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio
@@ -244,14 +264,15 @@
       const imageWatcher = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting) {
+            if (entry.intersectionRatio >= 0.5) {
               entry.target.classList.add("active");
-            } else {
+            }
+            if (entry.intersectionRation < 0.1) {
               entry.target.classList.remove("active");
             }
           });
         },
-        { threshold: 0.5 },
+        { threshold: [0.5, 0] },
       );
       setTimeout(
         () => sliderImages.forEach((image) => imageWatcher.observe(image)),
